@@ -24,16 +24,14 @@ class Exercise(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title:Mapped[str] = mapped_column(String(50),nullable=False)
-
-    """Надо добаваить 3 колонки: Вес, Повторения, Подходы"""
-
+    weight :Mapped[int] = mapped_column(Integer,nullable=False)
+    repetitions :Mapped[int] = mapped_column(Integer,nullable=False)
+    round :Mapped[int] = mapped_column(Integer,nullable=False)
     annotation:Mapped[str] = mapped_column(String(150),nullable=True)
-    training: Mapped[list[Training]] = relationship(
+    training: Mapped[list["Training"]] = relationship(
         secondary=association_table_training_exercise,
         back_populates="training"
     )
-
-
 
 class Training(Base):
     __tablename__ = "training"
@@ -42,7 +40,7 @@ class Training(Base):
     title:Mapped[str] = mapped_column(String(50),nullable=False)
     subtitle:Mapped[str] = mapped_column(String(100),nullable=False)
     annotation:Mapped[str] = mapped_column(String(150),nullable=True)
-    children: Mapped[list[Exercise]] = relationship(
+    children: Mapped[list["Exercise"]] = relationship(
         secondary=association_table_training_exercise,
         back_populates="exercise"
     )
