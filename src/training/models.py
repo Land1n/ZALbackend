@@ -8,6 +8,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import relationship
 
+from src.auth.models import User
 
 class Base(DeclarativeBase):
     pass
@@ -40,7 +41,11 @@ class Training(Base):
     title:Mapped[str] = mapped_column(String(50),nullable=False)
     subtitle:Mapped[str] = mapped_column(String(100),nullable=False)
     annotation:Mapped[str] = mapped_column(String(150),nullable=True)
-    children: Mapped[list["Exercise"]] = relationship(
+    exercise: Mapped[list["Exercise"]] = relationship(
         secondary=association_table_training_exercise,
         back_populates="exercise"
     )
+    user_id: Mapped[int] = mapped_column(ForeignKey(User.id))
+    user: Mapped["User"] = relationship(back_populates="user")
+
+
